@@ -75,15 +75,8 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
         >
-          <div className="flex h-[260px] flex-col rounded-lg border border-ink-100 bg-white p-4 dark:bg-ink-50 sm:h-[300px]">
-            <div className="flex items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-widest text-ink-400">
-              <span>hydro / discharge-station</span>
-              <span className="hidden sm:inline">live</span>
-            </div>
-
-            <div className="mt-3 min-h-0 flex-1">
-              <DotCutPanel />
-            </div>
+          <div className="h-[260px] overflow-hidden rounded-lg border border-ink-100 bg-paper p-3 dark:bg-ink-50 sm:h-[300px]">
+            <DotCutPanel />
           </div>
         </motion.div>
       </div>

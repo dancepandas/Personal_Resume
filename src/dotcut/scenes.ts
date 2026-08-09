@@ -51,13 +51,17 @@ function hash2(x: number, y: number): number {
   return s - Math.floor(s)
 }
 
+// 六个字符对应水文 × AI 的核心记号：
+//   A = AI / Attention       Q = 流量 Discharge
+//   Z = 水位 Stage           P = 降水 Precipitation
+//   R = 径流 Runoff          n = 模型维度 / step
 export const SCENES: Scene[] = [
   { kind: 'text', value: 'A', transition: 'wipe', palette: 0, style: 'drift' },
-  { kind: 'rings', transition: 'ripple', palette: 1, style: 'grain' },
-  { kind: 'columns', transition: 'columns', palette: 2, style: 'streak' },
-  { kind: 'checker', transition: 'scatter', palette: 3, style: 'swell' },
-  { kind: 'boxes', transition: 'collapse', palette: 4, style: 'grain' },
-  { kind: 'bars', transition: 'wipe', palette: 5, style: 'drift' },
+  { kind: 'text', value: 'Q', transition: 'ripple', palette: 1, style: 'grain' },
+  { kind: 'text', value: 'Z', transition: 'columns', palette: 2, style: 'streak' },
+  { kind: 'text', value: 'P', transition: 'scatter', palette: 3, style: 'swell' },
+  { kind: 'text', value: 'R', transition: 'collapse', palette: 4, style: 'grain' },
+  { kind: 'text', value: 'n', transition: 'wipe', palette: 5, style: 'drift' },
 ]
 
 export function styleField(

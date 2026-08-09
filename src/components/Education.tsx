@@ -13,7 +13,7 @@ export default function Education() {
         whileInView="visible"
         viewport={viewportOnce}
         variants={stagger()}
-        className="mt-10 grid gap-x-8 gap-y-9 sm:grid-cols-2"
+        className="mt-10 grid grid-cols-1 gap-x-8 gap-y-9 sm:grid-cols-2"
       >
         {education.map((e) => (
           <motion.div

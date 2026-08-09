@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, useScroll, useSpring } from 'framer-motion'
-import { FileDown, Loader2 } from 'lucide-react'
+import { FileDown, Loader2, Menu, X } from 'lucide-react'
 import { useDownloadPdf } from '../lib/useDownloadPdf'
 
 const sections = [
@@ -13,6 +13,7 @@ const sections = [
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const { scrollYProgress } = useScroll()
   const { busy, run } = useDownloadPdf()
   // 水位 —— 滚动进度即"水位上涨"
@@ -66,6 +67,15 @@ export default function Header() {
             {busy ? <Loader2 size={14} className="animate-spin" /> : <FileDown size={14} />}
             {busy ? '生成中…' : '下载 PDF'}
           </button>
+          <button
+            type="button"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? '关闭菜单' : '打开菜单'}
+            aria-expanded={menuOpen}
+            className="-mr-1 p-1 text-ink-700 transition-colors hover:text-ink-900 sm:hidden"
+          >
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
 
         {/* 水位进度条：滚动得越深，水位涨得越高 */}
@@ -76,6 +86,24 @@ export default function Header() {
           />
         </div>
       </nav>
+
+      {/* 移动端菜单 */}
+      {menuOpen && (
+        <div className="border-t border-ink-100 bg-paper/95 backdrop-blur-md sm:hidden">
+          <nav className="mx-auto flex max-w-5xl flex-col px-6 py-2 sm:px-8">
+            {sections.map((s) => (
+              <a
+                key={s.id}
+                href={`#${s.id}`}
+                onClick={() => setMenuOpen(false)}
+                className="border-b border-ink-100/70 py-3 text-sm text-ink-700 transition-colors last:border-0 hover:text-ink-900"
+              >
+                {s.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   )
 }

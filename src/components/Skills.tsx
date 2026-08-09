@@ -20,7 +20,7 @@ export default function Skills() {
             key={category}
             variants={fadeUp}
             transition={{ duration: 0.4 }}
-            className="grid gap-4 sm:grid-cols-[10rem_1fr]"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-[10rem_1fr]"
           >
             <div className="text-sm font-medium text-ink-900">{category}</div>
             <div className="flex flex-wrap gap-2">

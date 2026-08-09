@@ -16,7 +16,7 @@ export default function OpenSource() {
         whileInView="visible"
         viewport={viewportOnce}
         variants={stagger()}
-        className="mt-10 grid gap-4 sm:grid-cols-2"
+        className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2"
       >
         {[featured, ...rest].map((repo, i) => (
           <motion.a

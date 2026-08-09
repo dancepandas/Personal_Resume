@@ -21,7 +21,7 @@ export default function About() {
         whileInView="visible"
         viewport={viewportOnce}
         variants={stagger()}
-        className="mt-12 grid gap-x-8 gap-y-8 md:grid-cols-2"
+        className="mt-12 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2"
       >
         {highlights.map((h) => {
           const Icon = iconMap[h.icon as keyof typeof iconMap]

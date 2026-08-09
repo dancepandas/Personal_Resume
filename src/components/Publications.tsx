@@ -14,7 +14,7 @@ export default function Publications() {
         whileInView="visible"
         viewport={viewportOnce}
         variants={stagger()}
-        className="mt-10 grid gap-8 sm:grid-cols-2"
+        className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2"
       >
         <motion.div variants={fadeUp} transition={{ duration: 0.4 }}>
           <div className="flex items-center gap-2 text-ink-900">

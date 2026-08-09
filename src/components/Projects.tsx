@@ -73,7 +73,7 @@ export default function Projects() {
         {/* 其余项目：2 列 registry 行，顶部发丝线，无卡片盒 */}
         <motion.div
           variants={stagger()}
-          className="grid gap-x-8 gap-y-9 sm:grid-cols-2"
+          className="grid grid-cols-1 gap-x-8 gap-y-9 sm:grid-cols-2"
         >
           {rest.map((p) => (
             <motion.div

@@ -17,7 +17,7 @@ export default function Hero() {
 
   return (
     <section id="top" className="pt-12 pb-16 sm:pt-16 sm:pb-20">
-      <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-14">
+      <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-14">
         {/* 左：正文 —— 状态、名字、价值一句话、两个 CTA（≤4 个文本元素） */}
         <motion.div
           initial="hidden"
@@ -36,17 +36,17 @@ export default function Hero() {
             <span className="text-sm text-ink-500">Open to opportunities · 武汉</span>
           </div>
 
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
             <img
               src={profile.avatar}
               alt={profile.name}
               className="h-20 w-20 rounded-full object-cover ring-2 ring-ink-100 sm:h-24 sm:w-24"
             />
-            <div>
+            <div className="min-w-0">
               <h1 className="text-6xl font-semibold tracking-tight text-ink-900 sm:text-7xl">
                 程帅
               </h1>
-              <div className="mt-1 font-mono text-sm uppercase tracking-[0.25em] text-ink-400">
+              <div className="mt-1 font-mono text-xs uppercase tracking-[0.2em] text-ink-400 sm:text-sm sm:tracking-[0.25em]">
                 CHENG&nbsp;SHUAI&nbsp;·&nbsp;AI&nbsp;ENGINEER
               </div>
             </div>

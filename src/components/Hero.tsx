@@ -1,7 +1,71 @@
+import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { profile } from '../content'
 import { fadeUp } from '../lib/motion'
 import DotCutPanel from './DotCutPanel'
+
+// 名字下方的打字机循环。reduced-motion 时定格在第一项,不打字不闪烁。
+// 时序:输入 ~60ms/字 → 停 1800ms → 退格 ~30ms/字 → 切下一词。
+function Typewriter({
+  words,
+  className,
+}: {
+  words: readonly string[]
+  className?: string
+}) {
+  const reduced = useReducedMotion()
+  const [idx, setIdx] = useState(0)
+  const [text, setText] = useState(reduced ? words[0] ?? '' : '')
+
+  useEffect(() => {
+    if (reduced) return
+    const word = words[idx % words.length]
+    if (!word) return
+    let typing: number | undefined
+    let hold: number | undefined
+    let erasing: number | undefined
+
+    let i = 0
+    const type = () => {
+      if (i <= word.length) {
+        setText(word.slice(0, i))
+        i += 1
+        typing = window.setTimeout(type, 60)
+      } else {
+        hold = window.setTimeout(() => {
+          const erase = () => {
+            if (i > 0) {
+              i -= 1
+              setText(word.slice(0, i))
+              erasing = window.setTimeout(erase, 30)
+            } else {
+              setIdx((x) => x + 1)
+            }
+          }
+          erase()
+        }, 1800)
+      }
+    }
+    type()
+    return () => {
+      if (typing) clearTimeout(typing)
+      if (hold) clearTimeout(hold)
+      if (erasing) clearTimeout(erasing)
+    }
+  }, [idx, reduced, words])
+
+  return (
+    <span className={className}>
+      {text}
+      {!reduced && (
+        <span
+          aria-hidden="true"
+          className="ml-[1px] inline-block h-[1em] w-[7px] -mb-[0.18em] bg-current opacity-70"
+        />
+      )}
+    </span>
+  )
+}
 
 export default function Hero() {
   const reduced = useReducedMotion()
@@ -39,6 +103,17 @@ export default function Hero() {
               </h1>
               <div className="mt-1 font-mono text-xs uppercase tracking-[0.2em] text-ink-400 sm:text-sm sm:tracking-[0.25em]">
                 CHENG&nbsp;SHUAI&nbsp;·&nbsp;AI&nbsp;ENGINEER
+              </div>
+              <div className="mt-1.5 font-mono text-xs tracking-[0.08em] text-accent sm:text-sm sm:tracking-[0.1em]">
+                <Typewriter
+                  words={[
+                    'Agent',
+                    '物理约束 DL',
+                    '时序建模',
+                    '边缘端 ONNX',
+                    '多目标调度',
+                  ]}
+                />
               </div>
             </div>
           </div>

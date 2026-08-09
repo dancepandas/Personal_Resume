@@ -11,9 +11,8 @@ export default function About() {
     <section id="about" className="border-t border-ink-100 py-20">
       <SectionHeading title="关于" subtitle="About" />
 
-      <p className="mt-8 max-w-2xl text-base leading-relaxed text-ink-600">
-        水文与水资源科班出身，研究方向从物理机理出发：把模型做成可解释、可部署、可演进的 AI
-        系统。目前在武汉大水云做"机理 × AI"耦合的水文智能系统。
+      <p className="mt-8 text-base leading-relaxed text-ink-600">
+        水文与水资源科班出身，研究方向从物理机理出发：把模型做成可解释、可部署、可演进的 AI 系统。目前在武汉大水云做"机理 × AI"耦合的水文智能系统。
       </p>
 
       <motion.div

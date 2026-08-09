@@ -27,7 +27,7 @@ export const highlights = [
   {
     icon: 'Layers',
     title: '机理 × AI 耦合',
-    desc: 'ONNX 量化实现边缘端部署，推动测报一体化落地',
+    desc: 'PINN 求解圣维南方程，XAJRNN × LSTM 物理约束混合模型',
   },
   {
     icon: 'BookOpen',

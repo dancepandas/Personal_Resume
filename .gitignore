@@ -6,6 +6,9 @@ dist/
 # 本地 / 临时
 .idea/
 .final-check.mjs
+.verify.mjs
+.verify2.mjs
+.verify/
 screenshot.png
 resume-print.pdf
 

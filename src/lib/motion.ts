@@ -14,3 +14,12 @@ export const stagger = (delay = 0.1): Variants => ({
 })
 
 export const viewportOnce = { once: true, margin: '-80px' }
+
+// 文字遮罩扫入：clip-path 从右往左揭开。仪表式的入场，不像弹簧。
+export const revealText: Variants = {
+  hidden: { clipPath: 'inset(0 100% 0 0)' },
+  visible: {
+    clipPath: 'inset(0 0% 0 0)',
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
+  },
+}

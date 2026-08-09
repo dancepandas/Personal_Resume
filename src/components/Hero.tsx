@@ -1,16 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { profile } from '../content'
 import { fadeUp } from '../lib/motion'
-import { Hydrograph } from './Hydrograph'
-
-const readout: Array<[string, string, boolean?]> = [
-  ['repos', '07'],
-  ['stars', '02'],
-  ['patents', '03'],
-  ['papers', '03'],
-  ['engine', 'floodmind'],
-  ['status', 'open to work', true],
-]
+import DotCutPanel from './DotCutPanel'
 
 export default function Hero() {
   const reduced = useReducedMotion()
@@ -78,31 +69,20 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* 右：签名 —— 紧凑的测站遥测仪表卡 */}
+        {/* 右：签名 —— dotcut 点阵仪表(6 场景循环,A / rings / columns / checker / boxes / bars) */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
         >
-          <div className="rounded-lg border border-ink-100 bg-white p-4 dark:bg-ink-50">
+          <div className="flex h-[260px] flex-col rounded-lg border border-ink-100 bg-white p-4 dark:bg-ink-50 sm:h-[300px]">
             <div className="flex items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-widest text-ink-400">
               <span>hydro / discharge-station</span>
               <span className="hidden sm:inline">live</span>
             </div>
 
-            <div className="mt-3">
-              <Hydrograph className="w-full" />
-            </div>
-
-            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-ink-100 pt-3 font-mono text-[11px] text-ink-500">
-              {readout.map(([k, v, highlight]) => (
-                <span key={k} className="inline-flex items-baseline gap-1">
-                  <span className="text-ink-400">{k}=</span>
-                  <span className={highlight ? 'font-medium text-accent' : 'font-medium text-ink-900'}>
-                    {v}
-                  </span>
-                </span>
-              ))}
+            <div className="mt-3 min-h-0 flex-1">
+              <DotCutPanel />
             </div>
           </div>
         </motion.div>

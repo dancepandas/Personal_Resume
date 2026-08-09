@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { Brain, Bot, Layers, BookOpen } from 'lucide-react'
 import { highlights } from '../content'
-import { fadeUp, stagger, viewportOnce } from '../lib/motion'
+import { fadeUp, revealText, stagger, viewportOnce } from '../lib/motion'
 import { HydroMark } from './Hydrograph'
 
 const iconMap = { Brain, Bot, Layers, BookOpen }
@@ -62,12 +62,7 @@ export function SectionHeading({
   subtitle?: string
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -16 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={viewportOnce}
-      transition={{ duration: 0.4 }}
-    >
+    <div>
       {tag ? (
         <div className="flex items-center gap-3">
           <HydroMark className="h-3.5 w-14" />
@@ -77,11 +72,17 @@ export function SectionHeading({
         </div>
       ) : null}
       <div className="mt-2 flex items-baseline gap-3">
-        <h2 className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">
+        <motion.h2
+          variants={revealText}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl"
+        >
           {title}
-        </h2>
+        </motion.h2>
         {subtitle && <span className="text-sm text-ink-400">/ {subtitle}</span>}
       </div>
-    </motion.div>
+    </div>
   )
 }

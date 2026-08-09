@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { motion, useScroll, useSpring } from 'framer-motion'
 import { FileDown, Loader2, Menu, X } from 'lucide-react'
 import { useDownloadPdf } from '../lib/useDownloadPdf'
 
@@ -14,10 +13,7 @@ const sections = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const { scrollYProgress } = useScroll()
   const { busy, run } = useDownloadPdf()
-  // 水位 —— 滚动进度即"水位上涨"
-  const level = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 })
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -76,14 +72,6 @@ export default function Header() {
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-        </div>
-
-        {/* 水位进度条：滚动得越深，水位涨得越高 */}
-        <div className="pointer-events-none absolute inset-x-0 -bottom-px h-[2px]">
-          <motion.div
-            style={{ scaleX: level }}
-            className="h-full origin-left bg-accent"
-          />
         </div>
       </nav>
 

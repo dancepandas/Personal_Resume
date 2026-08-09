@@ -8,7 +8,7 @@ export const profile = {
   location: '武汉',
   email: 'chs9710@163.com',
   github: 'dancepandas',
-  avatar: '/avatar.jpg',
+  avatar: './avatar.jpg',
   summary:
     '水文与水资源科班，深度学习方向。从物理机理出发，构建可解释、可部署、可演进的 AI 系统：智慧时序模型、AI Agent Runtime、边缘端量化部署。当前主要面向洪水预报、防洪调度、水资源优化等场景。',
 }

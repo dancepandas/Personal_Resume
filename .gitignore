@@ -1,0 +1,17 @@
+# 依赖与构建
+node_modules/
+dist/
+*.tsbuildinfo
+
+# 本地 / 临时
+.idea/
+.final-check.mjs
+screenshot.png
+resume-print.pdf
+
+# 简历源文档（站点内容以 src/ 为准）
+doc/
+
+# 日志
+npm-debug.log*
+yarn-error.log*

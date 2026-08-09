@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas, ui-monospace, monospace;
+
+  /* 纸面（略带冷调的白） */
+  --color-paper: #fbfcfd;
+  /* 墨色（冷调近黑，偏 slate） */
+  --color-ink-50: #f6f8fa;
+  --color-ink-100: #eef2f6;
+  --color-ink-200: #e2e8f0;
+  --color-ink-300: #cbd5e1;
+  --color-ink-400: #94a3b8;
+  --color-ink-500: #64748b;
+  --color-ink-600: #475569;
+  --color-ink-700: #334155;
+  --color-ink-800: #1e293b;
+  --color-ink-900: #0f172a;
+  --color-ink-950: #020617;
+  /* 发丝线 */
+  --color-line: #e3e8ef;
+  /* 水文蓝 — 唯一强调色（洪水预报 / 水位计语言） */
+  --color-accent: #0e7490;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* 隐藏滚动条，保留滚动 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-paper);
+  color: var(--color-ink-900);
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ============ 暗色模式 ============
+ * "夜间值班室"：只在 .dark-root 作用域内反转 token。
+ * PrintResume（PDF 版式）位于该作用域之外，永远保持亮色，保证导出 PDF 不受影响。
+ * 遵循系统 prefers-color-scheme，全页单一主题，无局部反色。 */
+@media (prefers-color-scheme: dark) {
+  /* body 在 .dark-root 作用域之外，需要单独反转，避免滚动/边缘露白；
+     @media print 已强制 body 为 #fff，PrintResume 导出不受影响 */
+  body {
+    background: #0a111e;
+  }
+
+  .dark-root {
+    --color-paper: #0a111e;
+    --color-ink-50: #0d1522;
+    --color-ink-100: #131d2e;
+    --color-ink-200: #1d2939;
+    --color-ink-300: #2b3a4f;
+    --color-ink-400: #43536b;
+    --color-ink-500: #7d8da3;
+    --color-ink-600: #9eacbf;
+    --color-ink-700: #c2cddd;
+    --color-ink-800: #dde4ee;
+    --color-ink-900: #edf1f7;
+    --color-ink-950: #f6f8fb;
+    --color-line: #1e2a3d;
+    --color-accent: #17a3c5;
+  }
+}
+
+/* ============ 导出 PDF / 打印 ============ */
+@page {
+  size: A4;
+  margin: 12mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

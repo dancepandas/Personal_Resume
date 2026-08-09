@@ -22,6 +22,15 @@ export default function Education() {
             transition={{ duration: 0.4 }}
             className="flex items-start gap-4 border-t border-ink-100 pt-5"
           >
+            {e.logo && (
+              <div className="flex h-12 w-12 flex-none items-center justify-center rounded-md bg-white p-1.5 dark:bg-ink-50">
+                <img
+                  src={e.logo}
+                  alt={`${e.school}校徽`}
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            )}
             <div>
               <h3 className="text-lg font-semibold text-ink-900">{e.school}</h3>
               <p className="mt-1 text-sm text-ink-500">

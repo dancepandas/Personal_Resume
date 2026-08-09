@@ -56,7 +56,7 @@ function hash2(x: number, y: number): number {
 //   Z = 水位 Stage           P = 降水 Precipitation
 //   R = 径流 Runoff          n = 模型维度 / step
 export const SCENES: Scene[] = [
-  { kind: 'text', value: 'A', transition: 'wipe', palette: 0, style: 'drift' },
+  { kind: 'text', value: 'AI', transition: 'wipe', palette: 0, style: 'drift' },
   { kind: 'text', value: 'Q', transition: 'ripple', palette: 1, style: 'grain' },
   { kind: 'text', value: 'Z', transition: 'columns', palette: 2, style: 'streak' },
   { kind: 'text', value: 'P', transition: 'scatter', palette: 3, style: 'swell' },
@@ -213,9 +213,10 @@ export function rasterize(
     return out
   }
 
+  const SCALE = 4
   const cv = document.createElement('canvas')
-  cv.width = cols
-  cv.height = rows
+  cv.width = cols * SCALE
+  cv.height = rows * SCALE
   const ctx = cv.getContext('2d', { willReadFrequently: true })
   if (!ctx) return out
 
@@ -223,32 +224,44 @@ export function rasterize(
   if (!text) return out
 
   ctx.fillStyle = '#000'
-  ctx.fillRect(0, 0, cols, rows)
+  ctx.fillRect(0, 0, cols * SCALE, rows * SCALE)
   ctx.fillStyle = '#fff'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
 
-  let size = rows * 0.8
+  // 在 4× 离屏上布局,这样 AI 两个细笔画都能在 42 网格里被至少 2 个 cell 覆盖
+  let size = rows * SCALE * 0.8
   ctx.font = `600 ${size}px ${fontFamily}`
-  const maxW = cols * 0.36
+  const maxW = cols * SCALE * 0.85
   const m = ctx.measureText(text)
   if (m.width > maxW) {
     size *= maxW / m.width
     ctx.font = `600 ${size}px ${fontFamily}`
   }
 
-  const maxH = rows * 0.58
+  const maxH = rows * SCALE * 0.58
   const mm = ctx.measureText(text)
   const gh = mm.actualBoundingBoxAscent + mm.actualBoundingBoxDescent
   if (gh > maxH) {
     size *= maxH / gh
     ctx.font = `600 ${size}px ${fontFamily}`
   }
-  ctx.fillText(text, cols / 2, rows / 2 + rows * 0.02)
+  ctx.fillText(text, (cols * SCALE) / 2, (rows * SCALE) / 2 + rows * SCALE * 0.02)
 
-  const data = ctx.getImageData(0, 0, cols, rows).data
-  for (let i = 0; i < cols * rows; i++) {
-    if (data[i * 4] > 110) out[i] = 0
+  // 降采样到 cols × rows:每个 cell 取 SCALE×SCALE 块的平均亮度
+  const data = ctx.getImageData(0, 0, cols * SCALE, rows * SCALE).data
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      let sum = 0
+      for (let dy = 0; dy < SCALE; dy++) {
+        for (let dx = 0; dx < SCALE; dx++) {
+          const px = (y * SCALE + dy) * (cols * SCALE) + (x * SCALE + dx)
+          sum += data[px * 4]
+        }
+      }
+      const avg = sum / (SCALE * SCALE)
+      if (avg > 110) out[y * cols + x] = 0
+    }
   }
   return out
 }

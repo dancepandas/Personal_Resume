@@ -110,6 +110,13 @@ export default function PrintResume() {
             {education.map((e) => (
               <div key={e.school} className="mb-1.5">
                 <div className="flex items-center gap-2">
+                  {e.logo && (
+                    <img
+                      src={e.logo}
+                      alt=""
+                      className="h-[7mm] w-[7mm] flex-none object-contain"
+                    />
+                  )}
                   <span className="text-[9pt] font-semibold">{e.school}</span>
                 </div>
                 <div className="flex items-baseline justify-between gap-3">

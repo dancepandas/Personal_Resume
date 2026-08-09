@@ -284,11 +284,13 @@ export const education = [
     degree: '硕士',
     major: '水利工程',
     period: '2022 - 2025',
+    logo: './首都师范大学.svg',
   },
   {
     school: '郑州大学',
     degree: '本科',
     major: '水文与水资源',
     period: '2016 - 2020',
+    logo: './郑州大学.svg',
   },
 ]

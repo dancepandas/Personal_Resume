@@ -4,7 +4,7 @@ import { profile } from '../content'
 export default function Contact() {
   return (
     <footer className="mt-12 border-t border-ink-100 bg-ink-50/50">
-      <div className="mx-auto max-w-5xl px-6 py-16 sm:px-8">
+      <div className="mx-auto max-w-6xl px-6 py-16 sm:px-8">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <h2 className="text-3xl font-semibold tracking-tight text-ink-900 sm:text-4xl">

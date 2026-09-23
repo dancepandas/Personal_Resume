@@ -1,8 +1,32 @@
 @import "tailwindcss";
 
+/* ============ 自托管字体 ============
+ * 站点部署在 GitHub Pages，读者主要在内地 —— Google Fonts 在境内经常连不上或极慢，
+ * 字体必须跟站点一起走，否则等到的不是"字体加载慢"，而是静默退回系统字体。
+ * 只取 latin 子集：Inter 与 JetBrains Mono 都没有汉字，中文由下面的系统字体接管。
+ * 放在 src/assets/ 而不是 public/ —— public 里的绝对路径配 base: './' 会在
+ * GitHub Pages 子路径下解析到域名根，直接 404。 */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./assets/fonts/inter-latin-var.woff2") format("woff2-variations");
+}
+
+@font-face {
+  font-family: "JetBrains Mono Variable";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("./assets/fonts/jetbrains-mono-latin-var.woff2") format("woff2-variations");
+}
+
 @theme {
-  --font-sans: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas, ui-monospace, monospace;
+  /* 拉丁在前、汉字在后 —— 顺序反了汉字会被拉丁字体接管，字形立刻垮掉 */
+  --font-sans: "Inter Variable", "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas,
+    ui-monospace, monospace;
 
   /* 纸面（略带冷调的白） */
   --color-paper: #fbfcfd;
@@ -22,6 +46,13 @@
   --color-line: #e3e8ef;
   /* 水文蓝 — 唯一强调色（洪水预报 / 水位计语言） */
   --color-accent: #0e7490;
+
+  /* 正文阅读宽度上限 = 容器内容宽（max-w-6xl 1152 − 左右各 32 内边距 = 1088px）。
+     原先是 40rem = 640px，在 1152 的容器里右边空出 448px —— 空得像是没写完。
+     中文行确实偏长，但留白比行长长的观感更差，取铺满。 */
+  --container-measure: 68rem;
+  /* 中文正文行高。拉丁惯例 1.4–1.5，汉字需要 1.7–1.8 才不挤 */
+  --leading-body: 1.75;
 }
 
 html {
@@ -42,6 +73,26 @@ body {
   background: var(--color-paper);
   color: var(--color-ink-900);
   text-rendering: optimizeLegibility;
+  /* 中英混排时把词间空隙撑开一点：汉字与拉丁挤在一起时汉字会显得被吞掉。
+     只作用于空格，所以 "FloodMind 水文智能体" 这类混排才有变化，纯中文不受影响。 */
+  word-spacing: 0.06em;
+}
+
+/* 标题按整数行收边，避免末行只剩一个字的孤字 */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* 等宽字体一律用等宽数字 —— 日期（2022.09 - 2025.04）与读数在多行之间才能对齐。
+   这条不加 @layer：无序层规则优先于 Tailwind 的 utilities 层，能盖住 .font-mono 工具类。 */
+.font-mono {
+  font-variant-numeric: tabular-nums;
 }
 
 ::selection {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
-import { profile } from '../content'
-import { fadeUp } from '../lib/motion'
+import { heroIntro, profile } from '../content'
+import { heroFrom, heroSeq } from '../lib/motion'
 import DotCutPanel from './DotCutPanel'
 
 // 名字下方的打字机循环。reduced-motion 时定格在第一项,不打字不闪烁。
@@ -67,21 +67,25 @@ function Typewriter({
   )
 }
 
+/**
+ * 首屏是整页唯一编排过入场序列的地方：状态 → 头像与名字 → 打字机 → 价值一句 → 两个 CTA，
+ * 依次落位（heroSeq 给定下标）。其余板块没有入场动画，只在标题上做一次 clip 揭开。
+ */
 export default function Hero() {
   const reduced = useReducedMotion()
+  const step = (i: number) => (reduced ? { duration: 0 } : heroSeq(i))
 
   return (
     <section id="top" className="pt-12 pb-16 sm:pt-16 sm:pb-20">
       <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-14">
         {/* 左：正文 —— 状态、名字、价值一句话、两个 CTA（≤4 个文本元素） */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeUp}
-          transition={{ duration: 0.5 }}
-          className="space-y-5"
-        >
-          <div className="flex items-center gap-2.5">
+        <div className="space-y-5">
+          <motion.div
+            initial={heroFrom}
+            animate={{ opacity: 1, y: 0 }}
+            transition={step(0)}
+            className="flex items-center gap-2.5"
+          >
             <span className="relative flex h-2 w-2">
               {!reduced && (
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
@@ -89,15 +93,21 @@ export default function Hero() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
             </span>
             <span className="text-sm text-ink-500">Open to opportunities · 武汉</span>
-          </div>
+          </motion.div>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+          {/* 头像放在名字上方而不是左边：放左边会把「程帅」推到 x=212，
+              而全页正文的左边缘是 96（容器内边距），名字就成了唯一不在这条线上的元素。 */}
+          <motion.div
+            initial={heroFrom}
+            animate={{ opacity: 1, y: 0 }}
+            transition={step(1)}
+          >
             <img
               src={profile.avatar}
               alt={profile.name}
               className="h-20 w-20 rounded-full object-cover ring-2 ring-ink-100 sm:h-24 sm:w-24"
             />
-            <div className="min-w-0">
+            <div className="mt-5 min-w-0">
               <h1 className="text-6xl font-semibold tracking-tight text-ink-900 sm:text-7xl">
                 程帅
               </h1>
@@ -116,17 +126,21 @@ export default function Hero() {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <p className="max-w-xl text-lg leading-relaxed text-ink-600">
-            从物理机理出发，把深度学习落进水利现场：洪水预报、防洪调度、水资源优化。
-          </p>
+          <motion.p
+            initial={heroFrom}
+            animate={{ opacity: 1, y: 0 }}
+            transition={step(2)}
+            className="max-w-measure text-lg leading-body text-ink-600"
+          >
+            {heroIntro}
+          </motion.p>
 
           <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={{ duration: 0.5, delay: 0.3 }}
+            initial={heroFrom}
+            animate={{ opacity: 1, y: 0 }}
+            transition={step(3)}
             className="flex flex-wrap gap-3 pt-2"
           >
             <a
@@ -137,18 +151,18 @@ export default function Hero() {
             </a>
             <a
               href="#experience"
-              className="inline-flex items-center gap-2 rounded-md border border-ink-200 px-4 py-2 text-sm font-medium text-ink-900 transition-all hover:border-ink-400 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 rounded-md border border-ink-200 px-4 py-2 text-sm font-medium text-ink-900 transition-all hover:border-accent/50 active:scale-[0.98]"
             >
               工作经历
             </a>
           </motion.div>
-        </motion.div>
+        </div>
 
         {/* 右：签名 —— dotcut 点阵仪表(6 场景循环,A / rings / columns / checker / boxes / bars) */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={heroFrom}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
+          transition={step(1)}
         >
           <div className="h-[260px] overflow-hidden rounded-lg border border-ink-100 bg-paper p-3 dark:bg-ink-50 sm:h-[300px]">
             <DotCutPanel />

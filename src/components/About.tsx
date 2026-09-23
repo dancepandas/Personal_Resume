@@ -1,36 +1,29 @@
 import { motion } from 'framer-motion'
-import { Brain, Bot, Layers, BookOpen } from 'lucide-react'
-import { highlights } from '../content'
-import { fadeUp, revealText, stagger, viewportOnce } from '../lib/motion'
+import { Brain, Bot, Scan, BookOpen } from 'lucide-react'
+import { about, highlights } from '../content'
+import { revealText, viewportOnce } from '../lib/motion'
 import { HydroMark } from './Hydrograph'
 
-const iconMap = { Brain, Bot, Layers, BookOpen }
+const iconMap = { Brain, Bot, Scan, BookOpen }
 
 export default function About() {
   return (
     <section id="about" className="border-t border-ink-100 py-20">
       <SectionHeading title="关于" subtitle="About" />
 
-      <p className="mt-8 text-base leading-relaxed text-ink-600">
-        水文与水资源科班出身，研究方向从物理机理出发：把模型做成可解释、可部署、可演进的 AI 系统。目前在武汉大水云做"机理 × AI"耦合的水文智能系统。
-      </p>
+      <div className="mt-8 max-w-measure space-y-4">
+        {about.map((p) => (
+          <p key={p} className="text-base leading-body text-ink-600">
+            {p}
+          </p>
+        ))}
+      </div>
 
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={viewportOnce}
-        variants={stagger()}
-        className="mt-12 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2"
-      >
+      <div className="mt-12 grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2">
         {highlights.map((h) => {
           const Icon = iconMap[h.icon as keyof typeof iconMap]
           return (
-            <motion.div
-              key={h.title}
-              variants={fadeUp}
-              transition={{ duration: 0.4 }}
-              className="group flex items-start gap-4"
-            >
+            <div key={h.title} className="group flex items-start gap-4">
               <div className="mt-0.5 rounded-md bg-ink-50 p-2.5 text-ink-700 transition-colors group-hover:bg-accent group-hover:text-white">
                 <Icon size={20} strokeWidth={1.5} />
               </div>
@@ -38,10 +31,10 @@ export default function About() {
                 <h3 className="text-base font-medium text-ink-900">{h.title}</h3>
                 <p className="mt-1 text-sm leading-relaxed text-ink-500">{h.desc}</p>
               </div>
-            </motion.div>
+            </div>
           )
         })}
-      </motion.div>
+      </div>
     </section>
   )
 }
@@ -76,7 +69,7 @@ export function SectionHeading({
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
-          className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl"
+          className="text-2xl font-semibold text-ink-900 sm:text-3xl"
         >
           {title}
         </motion.h2>

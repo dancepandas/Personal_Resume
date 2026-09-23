@@ -14,9 +14,10 @@ export default function DotCutPanel() {
   useEffect(() => {
     const host = hostRef.current
     if (!host) return
-    // 用站点主字体渲染字符,跟站点排版一致
+    // 用站点主字体渲染字符,跟站点排版一致（必须带上自托管的 Inter Variable，
+    // 否则点阵字跑在系统兜底字体上，跟正文不是一个字形）
     const fontFamily =
-      '"Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif'
+      '"Inter Variable", "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif'
     const engine = new DotCut(host, fontFamily)
     engineRef.current = engine
     if (!engine.ok) return

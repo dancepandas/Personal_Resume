@@ -96,6 +96,12 @@ export default function PrintResume() {
                 <span className="shrink-0 text-[8.5pt] text-ink-500">{p.period}</span>
               </div>
               <p className="text-[8.5pt] leading-snug text-ink-800">{p.description}</p>
+              {/* 读数行 —— 网页版是等宽 label/value 条，纸质版压成一行等宽串 */}
+              {'metrics' in p && p.metrics && (
+                <p className="mt-0.5 font-mono text-[8pt] text-ink-700">
+                  {p.metrics.map((m) => `${m.k} ${m.v}`).join('　·　')}
+                </p>
+              )}
               <p className="mt-0.5 text-[8pt] text-ink-500">{p.tags.join(' · ')}</p>
             </div>
           ))}

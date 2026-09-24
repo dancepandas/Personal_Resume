@@ -1,57 +1,66 @@
 import { MapPin } from 'lucide-react'
+import { motion } from 'framer-motion'
 import { experience } from '../content'
-import { SectionHeading } from './About'
+import { fadeUp, viewportOnce } from '../lib/motion'
+import SectionHeading from './SectionHeading'
 
+/**
+ * 工作经历 —— 白卡（灰带上的卡片浮起），卡内左时间栏 + 右成果两栏。
+ * 卡片保留，单调感靠灰白交替色带和卡内排版解决。
+ */
 export default function Experience() {
   return (
-    <section id="experience" className="border-t border-ink-100 py-20">
-      <SectionHeading tag="experience" title="工作经历" subtitle="Experience" />
+    <section id="experience" className="py-20 sm:py-24">
+      <SectionHeading title="工作经历" subtitle="四段职业经历，从工程预算到水利 AI" />
 
-      {/* 单栏，日期压在职位上方 —— 原来日期占左侧 12rem 栏，把职位/概要/每条经历
-          全推到 x=320，而「关于」整块在 96，两段读起来就是没对齐。
-          -ml-[26px] 把时间轴竖线（2px 边框 + pl-6 的 24px）挪进左侧留白，
-          竖线落在 70px，仍在外层容器的内边距里，不会碰到屏幕边缘。 */}
-      <ol className="mt-10 space-y-10 sm:-ml-[26px]">
+      <div className="mt-10 space-y-4">
         {experience.map((e, idx) => (
-          <li
+          <motion.div
             key={`${e.company}-${e.period}`}
-            className="relative border-l-2 border-ink-100 pl-6 transition-colors hover:border-accent/40"
+            variants={fadeUp}
+            custom={idx}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="card card-hover p-6 sm:p-7"
           >
-            <span className="absolute -left-[5px] top-2 h-2 w-2 rounded-full bg-accent" />
+            <div className="grid grid-cols-1 gap-x-10 lg:grid-cols-[200px_1fr]">
+              {/* 左：时间 + 地点（等宽数字对齐） */}
+              <div className="tnum text-[13px] leading-6 text-ink-400">
+                <p className="font-medium text-ink-800">{e.period}</p>
+                {e.location && (
+                  <p className="mt-1 flex items-center gap-1">
+                    <MapPin size={12} />
+                    {e.location}
+                  </p>
+                )}
+              </div>
 
-            <div className="flex flex-wrap items-center gap-x-2 font-mono text-xs text-ink-500">
-              <span className="text-ink-900">{e.period}</span>
-              {e.location && (
-                <span className="inline-flex items-center gap-1">
-                  <MapPin size={12} />
-                  {e.location}
-                </span>
-              )}
+              {/* 右：职位 + 公司 + 成果 */}
+              <div className="mt-4 min-w-0 lg:mt-0">
+                <h3 className="text-[17px] font-semibold text-ink-800">
+                  {e.role}
+                  <span className="font-normal text-ink-400"> · {e.company}</span>
+                  {idx === 0 && (
+                    <span className="ml-2 rounded-full bg-accent/10 px-2 py-0.5 align-middle text-[11px] font-medium text-accent">
+                      现职
+                    </span>
+                  )}
+                </h3>
+                <p className="mt-1 text-[14px] text-ink-500">{e.summary}</p>
+                <ul className="mt-4 grid grid-cols-1 gap-x-10 gap-y-2 lg:grid-cols-2">
+                  {e.achievements.map((a, i) => (
+                    <li key={i} className="flex gap-2.5 text-[14px] leading-relaxed text-ink-600">
+                      <span className="mt-[0.62em] h-1 w-1 flex-none rounded-full bg-ink-300" />
+                      <span>{a}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-
-            <div className="mt-1.5 flex flex-wrap items-baseline gap-x-2">
-              <h3 className="text-lg font-semibold text-ink-900">{e.role}</h3>
-              <span className="text-ink-500">@ {e.company}</span>
-              {idx === 0 && (
-                <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
-                  当前
-                </span>
-              )}
-            </div>
-
-            <p className="mt-1 text-sm leading-body text-ink-600">{e.summary}</p>
-
-            <ul className="mt-4 max-w-measure space-y-2">
-              {e.achievements.map((a, i) => (
-                <li key={i} className="flex gap-3 text-sm leading-body text-ink-700">
-                  <span className="mt-1.5 inline-block h-1 w-1 flex-none rounded-full bg-ink-300" />
-                  <span>{a}</span>
-                </li>
-              ))}
-            </ul>
-          </li>
+          </motion.div>
         ))}
-      </ol>
+      </div>
     </section>
   )
 }

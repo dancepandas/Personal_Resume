@@ -1,7 +1,6 @@
 import { MotionConfig } from 'framer-motion'
 import Header from './components/Header'
 import Hero from './components/Hero'
-import About from './components/About'
 import Experience from './components/Experience'
 import Projects from './components/Projects'
 import OpenSource from './components/OpenSource'
@@ -9,34 +8,52 @@ import Skills from './components/Skills'
 import Education from './components/Education'
 import Publications from './components/Publications'
 import Contact from './components/Contact'
-import ScrollRail from './components/ScrollRail'
 import PrintResume from './components/PrintResume'
+
+/** 内容容器 —— 每个板块内部的统一宽度与内边距 */
+const wrap = 'mx-auto max-w-6xl px-6 sm:px-8'
 
 export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       {/* 屏幕版：打印/导出 PDF 时隐藏。.dark-root 只反转屏幕版配色，
           打印版（PrintResume）在其外，导出 PDF 恒为亮色 */}
-      <div className="dark-root min-h-screen bg-paper text-ink-900">
+      <div className="dark-root min-h-screen bg-paper text-ink-800">
         <div className="print:hidden">
           <Header />
-          {/* 宽度用 max-w-6xl（1152px）而非 5xl（1024px）：5xl 在 1920 屏上左右各空 448px，
-              而 Hero 左栏只剩 524px，一句话铺不开。正文段落的上限是 max-w-measure，
-              已经跟容器内容宽（1088px）对齐，段落会铺满。Header / Contact 必须同步，
-              否则页头与正文错位。 */}
-          <main className="mx-auto max-w-6xl px-6 sm:px-8">
-            <Hero />
-            <About />
-            <Experience />
-            <Projects />
-            <OpenSource />
-            <Skills />
-            <Education />
-            <Publications />
+          <main>
+            {/* 白 / 灰交替色带：全宽灰带 + 内部容器，是页面色彩节奏的来源。
+                灰带上的卡片用白色（浮起），白带上的列表行用发丝线（沉降）——
+                卡片只留给"主打"内容，其余一律让位给排版。 */}
+            <div className={wrap}>
+              <Hero />
+            </div>
+            <div className="bg-ink-100/50">
+              <div className={wrap}>
+                <Experience />
+              </div>
+            </div>
+            <div className={wrap}>
+              <Projects />
+            </div>
+            <div className="bg-ink-100/50">
+              <div className={wrap}>
+                <OpenSource />
+              </div>
+            </div>
+            <div className={wrap}>
+              <Skills />
+            </div>
+            <div className="bg-ink-100/50">
+              <div className={wrap}>
+                <Education />
+              </div>
+            </div>
+            <div className={wrap}>
+              <Publications />
+            </div>
           </main>
           <Contact />
-          {/* 右侧测站刻度（滚动读数）—— 只在 xl 以上出现，窄屏让位给内容 */}
-          <ScrollRail />
         </div>
       </div>
 

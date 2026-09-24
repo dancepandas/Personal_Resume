@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-/* ============ 自托管字体 ============
- * 站点部署在 GitHub Pages，读者主要在内地 —— Google Fonts 在境内经常连不上或极慢，
- * 字体必须跟站点一起走，否则等到的不是"字体加载慢"，而是静默退回系统字体。
- * 只取 latin 子集：Inter 与 JetBrains Mono 都没有汉字，中文由下面的系统字体接管。
+/* ============ 字体 ============
+ * Apple 风格 = SF Pro 的排版纪律。Windows/内地没有 SF Pro，
+ * Inter Variable 是字重、字面、数字都最接近的自托管方案（apple.com 自己也用类似字重节奏）。
+ * 只取 latin 子集，中文由系统黑体接管。
  * 放在 src/assets/ 而不是 public/ —— public 里的绝对路径配 base: './' 会在
  * GitHub Pages 子路径下解析到域名根，直接 404。 */
 @font-face {
@@ -14,42 +14,31 @@
   src: url("./assets/fonts/inter-latin-var.woff2") format("woff2-variations");
 }
 
-@font-face {
-  font-family: "JetBrains Mono Variable";
-  font-style: normal;
-  font-weight: 100 800;
-  font-display: swap;
-  src: url("./assets/fonts/jetbrains-mono-latin-var.woff2") format("woff2-variations");
-}
-
 @theme {
   /* 拉丁在前、汉字在后 —— 顺序反了汉字会被拉丁字体接管，字形立刻垮掉 */
   --font-sans: "Inter Variable", "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono Variable", "JetBrains Mono", "SF Mono", "Cascadia Code", Consolas,
-    ui-monospace, monospace;
 
-  /* 纸面（略带冷调的白） */
-  --color-paper: #fbfcfd;
-  /* 墨色（冷调近黑，偏 slate） */
-  --color-ink-50: #f6f8fa;
-  --color-ink-100: #eef2f6;
-  --color-ink-200: #e2e8f0;
-  --color-ink-300: #cbd5e1;
-  --color-ink-400: #94a3b8;
-  --color-ink-500: #64748b;
-  --color-ink-600: #475569;
-  --color-ink-700: #334155;
-  --color-ink-800: #1e293b;
-  --color-ink-900: #0f172a;
-  --color-ink-950: #020617;
-  /* 发丝线 */
-  --color-line: #e3e8ef;
-  /* 水文蓝 — 唯一强调色（洪水预报 / 水位计语言） */
-  --color-accent: #0e7490;
+  /* Apple 调色板（apple.com 同款灰阶） */
+  --color-paper: #ffffff; /* 页面 */
+  --color-sheet: #fbfbfd; /* 比页面更亮的一档 —— 卡片/浮层（亮模式与白页拉开 0.5 阶） */
+  --color-ink-50: #fafafa; /* 悬停底 */
+  --color-ink-100: #f5f5f7; /* 分区灰底 / chip 底 */
+  --color-ink-200: #e8e8ed;
+  --color-ink-300: #d2d2d7; /* 发丝线 */
+  --color-ink-400: #86868b; /* 次要文字 */
+  --color-ink-500: #6e6e73;
+  --color-ink-600: #424245; /* 正文灰 */
+  --color-ink-700: #333336;
+  --color-ink-800: #1d1d1f; /* 主文字（Apple 近黑） */
+  --color-ink-900: #161617;
+  --color-ink-950: #000000;
+  --color-line: #d2d2d7; /* 分隔线 */
+  --color-accent: #0071e3; /* Apple 蓝 */
+  /* 状态色（Apple 系统色，用于成果状态点） */
+  --color-success: #30d158;
+  --color-warning: #ff9f0a;
 
-  /* 正文阅读宽度上限 = 容器内容宽（max-w-6xl 1152 − 左右各 32 内边距 = 1088px）。
-     原先是 40rem = 640px，在 1152 的容器里右边空出 448px —— 空得像是没写完。
-     中文行确实偏长，但留白比行长长的观感更差，取铺满。 */
+  /* 正文阅读宽度上限 = 容器内容宽（max-w-6xl 1152 − 左右各 32 内边距 = 1088px） */
   --container-measure: 68rem;
   /* 中文正文行高。拉丁惯例 1.4–1.5，汉字需要 1.7–1.8 才不挤 */
   --leading-body: 1.75;
@@ -59,7 +48,6 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* 隐藏滚动条，保留滚动 */
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -71,7 +59,7 @@ html::-webkit-scrollbar {
 body {
   font-family: var(--font-sans);
   background: var(--color-paper);
-  color: var(--color-ink-900);
+  color: var(--color-ink-800);
   text-rendering: optimizeLegibility;
   /* 中英混排时把词间空隙撑开一点：汉字与拉丁挤在一起时汉字会显得被吞掉。
      只作用于空格，所以 "FloodMind 水文智能体" 这类混排才有变化，纯中文不受影响。 */
@@ -89,8 +77,8 @@ p {
   text-wrap: pretty;
 }
 
-/* 等宽字体一律用等宽数字 —— 日期（2022.09 - 2025.04）与读数在多行之间才能对齐。
-   这条不加 @layer：无序层规则优先于 Tailwind 的 utilities 层，能盖住 .font-mono 工具类。 */
+/* 数字一律用等宽数字 —— 日期（2022.09 - 2025.04）与读数在多行之间才能对齐 */
+.tnum,
 .font-mono {
   font-variant-numeric: tabular-nums;
 }
@@ -105,32 +93,63 @@ p {
   outline-offset: 2px;
 }
 
-/* ============ 暗色模式 ============
- * "夜间值班室"：只在 .dark-root 作用域内反转 token。
- * PrintResume（PDF 版式）位于该作用域之外，永远保持亮色，保证导出 PDF 不受影响。
- * 遵循系统 prefers-color-scheme，全页单一主题，无局部反色。 */
+/* ============ 组件级样式 ============
+ * Apple 卡片语言：大圆角 + 极淡描边 + 柔和投影。
+ * 亮模式靠阴影浮起，暗模式阴影不可见，换成白色描边。 */
+
+.card {
+  background: var(--color-sheet);
+  border-radius: 18px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 6px 28px rgba(0, 0, 0, 0.07);
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.card-hover:hover {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 14px 44px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+}
+
+/* chip —— Apple 式圆角小标签：灰底、无描边 */
+.chip {
+  border-radius: 9999px;
+  background: var(--color-ink-100);
+  color: var(--color-ink-600);
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 4px 11px;
+}
+
 @media (prefers-color-scheme: dark) {
-  /* body 在 .dark-root 作用域之外，需要单独反转，避免滚动/边缘露白；
-     @media print 已强制 body 为 #fff，PrintResume 导出不受影响 */
   body {
-    background: #0a111e;
+    background: #000;
   }
 
   .dark-root {
-    --color-paper: #0a111e;
-    --color-ink-50: #0d1522;
-    --color-ink-100: #131d2e;
-    --color-ink-200: #1d2939;
-    --color-ink-300: #2b3a4f;
-    --color-ink-400: #43536b;
-    --color-ink-500: #7d8da3;
-    --color-ink-600: #9eacbf;
-    --color-ink-700: #c2cddd;
-    --color-ink-800: #dde4ee;
-    --color-ink-900: #edf1f7;
-    --color-ink-950: #f6f8fb;
-    --color-line: #1e2a3d;
-    --color-accent: #17a3c5;
+    --color-paper: #000000;
+    --color-sheet: #1c1c1e; /* iOS 卡片色 */
+    --color-ink-50: #161617;
+    --color-ink-100: #1c1c1e;
+    --color-ink-200: #2c2c2e;
+    --color-ink-300: #424245;
+    --color-ink-400: #86868b;
+    --color-ink-500: #a1a1a6;
+    --color-ink-600: #d2d2d7;
+    --color-ink-700: #e8e8ed;
+    --color-ink-800: #f5f5f7;
+    --color-ink-900: #f5f5f7;
+    --color-ink-950: #ffffff;
+    --color-line: #424245;
+    --color-accent: #2997ff;
+    --color-success: #30d158;
+    --color-warning: #ffd60a;
+  }
+
+  .card {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.07);
+  }
+
+  .card-hover:hover {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12), 0 12px 40px rgba(0, 0, 0, 0.5);
   }
 }
 
